@@ -49,11 +49,11 @@ public abstract class Person {
     public Person(String id, String name, LocalDate birthDate, String phone) {
         this.id = id;
         this.name = name;
-        if (UtilDate.isNotFutureDate(birthDate))
-            this.birthDate = birthDate;
-        if(validatePhone(phone))
-            this.phone = phone;
+        this.birthDate = birthDate;
+        this.phone = phone;
     }
+
+    
 
     @Override
     public String toString() {

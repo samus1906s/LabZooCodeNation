@@ -16,10 +16,17 @@ import java.time.Period;
 public abstract class Employee extends Person {
     private Double salary;
 
+    
     public Double getSalary() {
         return salary;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    
+    
     public void setSalary(Double salary) {
         if (validateSalary(salary))
             this.salary = salary;
@@ -43,3 +50,4 @@ public abstract class Employee extends Person {
     
     
 }
+
