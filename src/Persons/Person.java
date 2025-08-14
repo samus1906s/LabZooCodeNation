@@ -36,6 +36,15 @@ public abstract class Person {
     public String getPhone() {
         return phone;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+    
     
     public void setPhone(String phone) {
         if (validatePhone(phone))
