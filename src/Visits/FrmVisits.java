@@ -31,16 +31,16 @@ public class FrmVisits extends javax.swing.JFrame {
     }
     
     private void clear(){
-        jFormattedTextField5.setText(""); // Visitor ID
-        jFormattedTextField4.setText(""); // Nombre
-        jFormattedTextField3.setText(""); // Teléfono
-        jFormattedTextField1.setText(""); // Fecha de nacimiento
-        jFormattedTextField2.setText(""); // Fecha de visita (no se usa en tu clase Visitor)
+        jFormattedTextField5.setText(""); 
+        jTextField1.setText(""); 
+        jFormattedTextField3.setText(""); 
+        jFormattedTextField1.setText(""); 
+        jFormattedTextField2.setText(""); 
         visitor = null;
     }
      
     private boolean validateRequiere(JComponent...txts){
-        return UtilGUI.validateRequiere(jFormattedTextField5, jFormattedTextField4, jFormattedTextField3, jFormattedTextField1);
+        return UtilGUI.validateRequiere(jFormattedTextField5, jTextField1, jFormattedTextField3, jFormattedTextField1);
     }
     
     private void save(){
@@ -50,7 +50,7 @@ public class FrmVisits extends javax.swing.JFrame {
         }
         
         String visitorId = jFormattedTextField5.getText();
-        String name = jFormattedTextField4.getText();
+        String name = jTextField1.getText();
         String phone = jFormattedTextField3.getText();
         LocalDate birthDate = UtilDate.toLocalDate(jFormattedTextField1.getText());
         
@@ -75,7 +75,7 @@ public class FrmVisits extends javax.swing.JFrame {
             return;
         }
         
-        visitor.setName(jFormattedTextField4.getText());
+        visitor.setName(jTextField1.getText());
         visitor.setPhone(jFormattedTextField3.getText());
         visitor.setBirthDate(UtilDate.toLocalDate(jFormattedTextField1.getText()));
         
@@ -95,25 +95,24 @@ public class FrmVisits extends javax.swing.JFrame {
         clear();
     }
     
-    private void search(){
-        String visitorId = JOptionPane.showInputDialog(this, "Ingrese el ID del visitante:");
-        if (visitorId == null || visitorId.trim().isEmpty()) {
-            return;
-        }
-        
-        visitor = list.find(visitorId);
-        if (visitor == null) {
-            UtilGUI.showErrorMessage(this, "Visitante no encontrado", "Búsqueda");
-            return;
-        }
-        
+    private void showData(){
         jFormattedTextField5.setText(visitor.getId());
-        jFormattedTextField4.setText(visitor.getName());
+        jTextField1.setText(visitor.getName());
         jFormattedTextField3.setText(visitor.getPhone());
         jFormattedTextField1.setText(UtilDate.toString(visitor.getBirthDate()));
-        jFormattedTextField2.setText("");
-        
-        UtilGUI.showMessage(this, "Visitante encontrado: " + visitor.getName(), "Búsqueda");
+        jFormattedTextField2.setText(""); 
+    }
+
+    private void search(){
+        JDialogVisits frm = new JDialogVisits(this,true);
+        frm.setList(list);
+        frm.setVisible(true);
+        visitor = frm.getVisitor();
+        if(visitor==null){
+            clear();
+        }else{
+            showData();
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -135,8 +134,8 @@ public class FrmVisits extends javax.swing.JFrame {
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jFormattedTextField2 = new javax.swing.JFormattedTextField();
         jFormattedTextField3 = new javax.swing.JFormattedTextField();
-        jFormattedTextField4 = new javax.swing.JFormattedTextField();
         jFormattedTextField5 = new javax.swing.JFormattedTextField();
+        jTextField1 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -171,27 +170,31 @@ public class FrmVisits extends javax.swing.JFrame {
         jLabel11.setText("Fecha de visita");
 
         jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
-        jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFormattedTextField1ActionPerformed(evt);
-            }
-        });
+        jFormattedTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        jFormattedTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         try {
             jFormattedTextField3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-
-        jFormattedTextField4.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        jFormattedTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         try {
-            jFormattedTextField5.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("VIS###")));
+            jFormattedTextField5.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("VIS-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jFormattedTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jFormattedTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextField5ActionPerformed(evt);
+            }
+        });
+
+        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -214,13 +217,13 @@ public class FrmVisits extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jFormattedTextField4))
-                .addGap(103, 103, 103)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(60, 60, 60)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jFormattedTextField3))
@@ -237,8 +240,8 @@ public class FrmVisits extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(52, 52, 52)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -290,22 +293,19 @@ public class FrmVisits extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(68, 68, 68)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(54, 54, 54)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(45, 45, 45))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,10 +326,6 @@ public class FrmVisits extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextField1ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         clear();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -349,6 +345,10 @@ public class FrmVisits extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         search();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jFormattedTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -384,7 +384,6 @@ public class FrmVisits extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JFormattedTextField jFormattedTextField3;
-    private javax.swing.JFormattedTextField jFormattedTextField4;
     private javax.swing.JFormattedTextField jFormattedTextField5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -394,5 +393,6 @@ public class FrmVisits extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

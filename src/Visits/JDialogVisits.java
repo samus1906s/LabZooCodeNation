@@ -4,12 +4,24 @@
  */
 package Visits;
 
+import Lists.List;
+import Persons.Visitors.Visitor;
+import Utils.UtilGUI;
+import java.util.ArrayList;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author je110
  */
 public class JDialogVisits extends javax.swing.JDialog {
-    
+    private VisitsArrayList list;            
+    private Visitor visitor;               
+    private DefaultTableModel model;
+    private TableRowSorter<DefaultTableModel> sorter;
+    private RowFilter<DefaultTableModel,Object> rowFilter;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JDialogVisits.class.getName());
 
     /**
@@ -18,6 +30,32 @@ public class JDialogVisits extends javax.swing.JDialog {
     public JDialogVisits(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        model = (DefaultTableModel) jTable1.getModel();
+        sorter = new TableRowSorter<>(model);
+        jTable1.setRowSorter(sorter);
+        
+        jTextField1.addActionListener(evt -> {
+            rowFilter = RowFilter.regexFilter("(?i)" + jTextField1.getText());
+            sorter.setRowFilter(rowFilter);
+        });
+    }
+    
+    public void setList(VisitsArrayList list) {
+        this.list = list;
+        loadTable();
+    }
+
+    public Visitor getVisitor() {
+        return visitor;
+    }
+
+    private void loadTable() {
+      model.setRowCount(0);
+        ArrayList<Visitor> visitors = list.getVisitors();
+        for (Visitor v : visitors) {
+            Object[] data = {v.getId(), v.getName(), v.getBirthDate(), v.getPhone()};
+            model.addRow(data);
+        }
     }
 
     /**
@@ -42,6 +80,12 @@ public class JDialogVisits extends javax.swing.JDialog {
         jLabel2.setForeground(new java.awt.Color(51, 51, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Buscar Visitante");
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -69,12 +113,22 @@ public class JDialogVisits extends javax.swing.JDialog {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Aceptar");
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(255, 0, 0));
         jButton2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Cancelar");
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,6 +165,29 @@ public class JDialogVisits extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int row = jTable1.getSelectedRow();
+        if (row == -1) {
+            UtilGUI.showErrorMessage(this, "Debe seleccionar un visitante", "Error");
+            return;
+        }
+        String id = String.valueOf(jTable1.getValueAt(row, 0));
+        visitor = list.find(id);
+        setVisible(false);
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        visitor = null;
+        setVisible(false);
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        rowFilter = RowFilter.regexFilter("(?i)" + jTextField1.getText());
+        sorter.setRowFilter(rowFilter);
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments

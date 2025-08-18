@@ -13,6 +13,10 @@ import java.util.ArrayList;
 public class VisitsArrayList implements List<Visitor> {
     ArrayList<Visitor> visitors;
 
+    public ArrayList<Visitor> getVisitors() {
+        return visitors;
+    }
+
     public VisitsArrayList(ArrayList<Visitor> visitors) {
         this.visitors = new ArrayList<>();
     }
