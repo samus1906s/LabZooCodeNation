@@ -4,12 +4,21 @@
  */
 package Visits;
 
+import Persons.Visitors.Visitor;
+import Utils.UtilDate;
+import Utils.UtilGUI;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author je110
  */
 public class FrmVisits extends javax.swing.JFrame {
-    
+    private VisitsArrayList list;
+    private Visitor visitor;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmVisits.class.getName());
 
     /**
@@ -17,8 +26,95 @@ public class FrmVisits extends javax.swing.JFrame {
      */
     public FrmVisits() {
         initComponents();
+        list = new VisitsArrayList(new ArrayList<>());
+        visitor = null;
     }
-
+    
+    private void clear(){
+        jFormattedTextField5.setText(""); // Visitor ID
+        jFormattedTextField4.setText(""); // Nombre
+        jFormattedTextField3.setText(""); // Teléfono
+        jFormattedTextField1.setText(""); // Fecha de nacimiento
+        jFormattedTextField2.setText(""); // Fecha de visita (no se usa en tu clase Visitor)
+        visitor = null;
+    }
+     
+    private boolean validateRequiere(JComponent...txts){
+        return UtilGUI.validateRequiere(jFormattedTextField5, jFormattedTextField4, jFormattedTextField3, jFormattedTextField1);
+    }
+    
+    private void save(){
+        if (!validateRequiere()){
+            UtilGUI.showErrorMessage(this, "Faltan datos requeridos", "Error");
+            return;
+        }
+        
+        String visitorId = jFormattedTextField5.getText();
+        String name = jFormattedTextField4.getText();
+        String phone = jFormattedTextField3.getText();
+        LocalDate birthDate = UtilDate.toLocalDate(jFormattedTextField1.getText());
+        
+        visitor = new Visitor(visitorId, name, birthDate, phone);
+        
+        if (!list.add(visitor)){
+            JOptionPane.showMessageDialog(this, "No se agregó el registro - Ya existe un visitante con ese ID");
+            return;
+        }
+        
+        UtilGUI.showMessage(this, "Registro agregado: " + visitor.getName(), "Agregado");
+        clear();
+    }
+    
+    private void update(){
+        if(visitor == null){
+            UtilGUI.showErrorMessage(this, "No se ha seleccionado un registro", "Error");
+            return;  
+        }
+        if (!validateRequiere()){
+            UtilGUI.showErrorMessage(this, "Faltan datos requeridos", "Error");
+            return;
+        }
+        
+        visitor.setName(jFormattedTextField4.getText());
+        visitor.setPhone(jFormattedTextField3.getText());
+        visitor.setBirthDate(UtilDate.toLocalDate(jFormattedTextField1.getText()));
+        
+        UtilGUI.showMessage(this, "Registro actualizado: " + visitor.getName(), "Actualizado");
+    }
+    
+    private void delete(){
+        if(visitor == null){
+            UtilGUI.showErrorMessage(this, "Debe especificar el visitante a eliminar", "Error");
+            return;  
+        } 
+        if (!list.remove(visitor)){
+            JOptionPane.showMessageDialog(this, "No se eliminó el registro");
+            return;
+        }
+        UtilGUI.showMessage(this, "Registro eliminado", "Eliminado");
+        clear();
+    }
+    
+    private void search(){
+        String visitorId = JOptionPane.showInputDialog(this, "Ingrese el ID del visitante:");
+        if (visitorId == null || visitorId.trim().isEmpty()) {
+            return;
+        }
+        
+        visitor = list.find(visitorId);
+        if (visitor == null) {
+            UtilGUI.showErrorMessage(this, "Visitante no encontrado", "Búsqueda");
+            return;
+        }
+        
+        jFormattedTextField5.setText(visitor.getId());
+        jFormattedTextField4.setText(visitor.getName());
+        jFormattedTextField3.setText(visitor.getPhone());
+        jFormattedTextField1.setText(UtilDate.toString(visitor.getBirthDate()));
+        jFormattedTextField2.setText("");
+        
+        UtilGUI.showMessage(this, "Visitante encontrado: " + visitor.getName(), "Búsqueda");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,11 +137,11 @@ public class FrmVisits extends javax.swing.JFrame {
         jFormattedTextField3 = new javax.swing.JFormattedTextField();
         jFormattedTextField4 = new javax.swing.JFormattedTextField();
         jFormattedTextField5 = new javax.swing.JFormattedTextField();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         jLabel4.setText("jLabel2");
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -154,20 +250,40 @@ public class FrmVisits extends javax.swing.JFrame {
                 .addContainerGap(69, Short.MAX_VALUE))
         );
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/application_vnd.oasis.opendocument.spreadsheet (4).png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Articulos.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Articulos.png"))); // NOI18N
-
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Visits/Guardar.png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Visits/Cerrar.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Visits/Buscar.png"))); // NOI18N
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/update-manager.png"))); // NOI18N
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -179,20 +295,17 @@ public class FrmVisits extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(68, 68, 68)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
+                .addGap(61, 61, 61)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(288, 288, 288)
-                    .addComponent(jButton1)
-                    .addContainerGap(300, Short.MAX_VALUE)))
+                .addGap(45, 45, 45))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,13 +318,9 @@ public class FrmVisits extends javax.swing.JFrame {
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(173, 173, 173)
-                    .addComponent(jButton1)
-                    .addContainerGap(173, Short.MAX_VALUE)))
         );
 
         pack();
@@ -221,9 +330,25 @@ public class FrmVisits extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jFormattedTextField1ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        clear();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        save();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        update();
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        delete();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        search();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,11 +376,11 @@ public class FrmVisits extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JFormattedTextField jFormattedTextField3;
