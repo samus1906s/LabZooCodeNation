@@ -99,7 +99,28 @@ public class FrmAnimals extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No se elimino el registro");
             return;
         }
+       animal=null;
        clear();
+    }
+    
+    private void showData(){
+        txtId.setText(animal.getId());
+        txtName.setText(animal.getName());
+        txtSpecie.setSelectedItem(animal.getSpecies());
+        txtBirthDate.setText(UtilDate.toString(animal.getBirthDate()));
+        txtZone.setSelectedItem(animal.getZone());
+    }
+    
+    private void search(){
+        FrmSearchAnimal frm = new FrmSearchAnimal(this,true);
+        frm.setList(list);
+        frm.setVisible(true);
+        animal=frm.getAnimal();
+        if(animal==null){
+            clear();
+        }else{
+            showData();
+        }
     }
 
     /**
@@ -339,7 +360,7 @@ public class FrmAnimals extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       
+    search();       
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void txtUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUpdateActionPerformed

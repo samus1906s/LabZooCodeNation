@@ -19,6 +19,11 @@ public class AnimalsHashMap implements List<Animal>{
         this.map = new HashMap<>();
     }
 
+    public HashMap<String, Animal> getMap() {
+        return map;
+    }
+    
+
     @Override
     public boolean add(Animal t) {
         if (map.containsKey(t.getId()))return false;
