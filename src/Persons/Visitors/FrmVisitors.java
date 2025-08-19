@@ -37,6 +37,7 @@ public class FrmVisitors extends javax.swing.JFrame {
         txtName.setText("");
         txtBirthDate.setText("");
         txtPhone.setText("");
+        visitor = null;
     }
     private void save() {
         if (!validateRequiere()) {
@@ -82,6 +83,25 @@ public class FrmVisitors extends javax.swing.JFrame {
             return;
         }
         clear();
+    }
+    
+    private void showData(){
+        txtId.setText(visitor.getId());
+        txtName.setText(visitor.getName());
+        txtBirthDate.setText(UtilDate.toString(visitor.getBirthDate()));
+        txtPhone.setText(visitor.getPhone());  
+    }
+
+    private void search(){
+        BuscarVisitante frm = new BuscarVisitante (this,true);
+        frm.setList(list);
+        frm.setVisible(true);
+        visitor = frm.getVisitor();
+        if(visitor==null){
+            clear();
+        }else{
+            showData();
+        }
     }
     
 
@@ -316,7 +336,7 @@ public class FrmVisitors extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       
+       search();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

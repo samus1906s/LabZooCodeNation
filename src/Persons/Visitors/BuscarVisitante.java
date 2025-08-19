@@ -4,20 +4,54 @@
  */
 package Persons.Visitors;
 
+import Utils.UtilGUI;
+import Visits.VisitsArrayList;
+import java.util.ArrayList;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author Eduard Salas Murillo
  */
 public class BuscarVisitante extends javax.swing.JDialog {
+    private VisitorArrayList list;
+    private Visitor visitor;
+    private DefaultTableModel model;
+    private TableRowSorter<DefaultTableModel> sorter;
+    private RowFilter<DefaultTableModel,Object> rowFilter;
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BuscarVisitante.class.getName());
-
     /**
      * Creates new form BuscarVisitante
      */
     public BuscarVisitante(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        model = (DefaultTableModel) jTable1.getModel();
+        sorter = new TableRowSorter<>(model);
+        jTable1.setRowSorter(sorter);
+        jTextField1.addActionListener(evt -> {
+            rowFilter = RowFilter.regexFilter("(?i)" + jTextField1.getText());
+            sorter.setRowFilter(rowFilter);
+        });
+    }
+    public void setList(VisitorArrayList list) {
+        this.list = list;
+        loadTable();
+    }
+
+    public Visitor getVisitor() {
+        return visitor;
+    }
+
+    private void loadTable() {
+      model.setRowCount(0);
+        ArrayList<Visitor> visitors = list.getMap();
+        for (Visitor v : visitors) {
+            Object[] data = {v.getId(), v.getName(), v.getBirthDate(), v.getPhone()};
+            model.addRow(data);
+        }
     }
 
     /**
@@ -42,6 +76,11 @@ public class BuscarVisitante extends javax.swing.JDialog {
         jLabel1.setText("Buscar Visitantes");
 
         jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -100,7 +139,7 @@ public class BuscarVisitante extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -110,12 +149,27 @@ public class BuscarVisitante extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        visitor = null;
+        setVisible(false);
+        dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        int row = jTable1.getSelectedRow();
+        if (row == -1) {
+            UtilGUI.showErrorMessage(this, "Debe seleccionar un visitante", "Error");
+            return;
+        }
+        String id = String.valueOf(jTable1.getValueAt(row, 0));
+        visitor = list.find(id);
+        setVisible(false);
+        dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        rowFilter = RowFilter.regexFilter("(?i)" + jTextField1.getText());
+        sorter.setRowFilter(rowFilter);
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -134,7 +188,6 @@ public class BuscarVisitante extends javax.swing.JDialog {
                 }
             }
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

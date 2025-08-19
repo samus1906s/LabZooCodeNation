@@ -19,6 +19,10 @@ public class VisitorArrayList implements List<Visitor>{
     public VisitorArrayList() {
         this.map = new ArrayList<>();
     }
+
+    public ArrayList<Visitor> getMap() {
+        return map;
+    }
    
     @Override
     public boolean add(Visitor v) {
