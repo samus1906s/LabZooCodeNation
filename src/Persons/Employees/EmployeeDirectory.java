@@ -19,14 +19,11 @@ import Persons.Employees.Guide;
  * @author Valdelomaar
  */
 public class EmployeeDirectory {
-    // CREATE
     private final List<Employee> all = new ArrayList<>();
     private final List<Guide> guides = new ArrayList<>();
     private final List<Zookeeper> zookeepers = new ArrayList<>();
     private final Map<String, Employee> byId = new HashMap<>();
-
-    // ===== CREATE (Guide o Zookeeper sin especialidad) =====
-    // Se usa para GUIDE; para ZOOKEEPER usa el overload con 'speciality'
+   
     public Employee add(Role role,
                         String id,
                         String name,
@@ -35,16 +32,17 @@ public class EmployeeDirectory {
                         Double salary) throws SalaryException {
         return add(role, id, name, birthDate, phone, salary, null);
     }
-
-    // ===== CREATE (Zookeeper con especialidad) =====
+    
+    // NOTA: el último parámetro ahora es "extra":
+    //  - Para ZOOKEEPER: especialidad (obligatoria)
+    //  - Para GUIDE: idioma (opcional, si viene se guarda)
     public Employee add(Role role,
                         String id,
                         String name,
                         LocalDate birthDate,
                         String phone,
                         Double salary,
-                        String speciality) throws SalaryException {
-
+                        String extra) throws SalaryException {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("id requerido");
         }
@@ -58,36 +56,39 @@ public class EmployeeDirectory {
         Employee e;
         switch (role) {
             case GUIDE: {
-                e = new Guide(id, name, birthDate, phone, salary);
+                Guide g = new Guide(id, name, birthDate, phone, salary);
+                // Si nos pasan un "extra" para GUIDE, se interpreta como idioma
+                if (extra != null && !extra.isBlank()) {
+                    g.setLanguages(new String[]{ extra.trim() });
+                }
+                e = g;
                 all.add(e);
-                guides.add((Guide) e);
+                guides.add(g);
                 break;
             }
             case ZOOKEEPER: {
-                if (speciality == null || speciality.isBlank()) {
+                if (extra == null || extra.isBlank()) {
                     throw new IllegalArgumentException("Especialidad requerida para Zookeeper");
                 }
-                e = new Zookeeper(id, name, birthDate, phone, salary, speciality);
+                Zookeeper z = new Zookeeper(id, name, birthDate, phone, salary, extra.trim());
+                e = z;
                 all.add(e);
-                zookeepers.add((Zookeeper) e);
+                zookeepers.add(z);
                 break;
             }
             default:
                 throw new IllegalArgumentException("Rol no soportado");
         }
-
         byId.put(id, e);
         return e;
     }
-
-    // ===== READ =====
+    
     public List<Employee> getAll() { return all; }
     public List<Guide> getGuides() { return guides; }
     public List<Zookeeper> getZookeepers() { return zookeepers; }
     public Employee getById(String id) { return byId.get(id); }
     public boolean existsId(String id) { return byId.containsKey(id); }
-
-    // ===== DELETE =====
+    
     public boolean removeById(String id) {
         Employee e = byId.remove(id);
         if (e == null) return false;
@@ -96,12 +97,10 @@ public class EmployeeDirectory {
         if (e instanceof Zookeeper) zookeepers.remove(e);
         return true;
     }
-
-    // ===== UPDATE básico (nombre/teléfono/salario) =====
+    
     public boolean updateBasics(String id, String name, String phone, Double salary) throws SalaryException {
         Employee e = byId.get(id);
         if (e == null) return false;
-
         if (name != null)  e.setName(name);
         if (phone != null) e.setPhone(phone);
         if (salary != null) {
@@ -110,25 +109,26 @@ public class EmployeeDirectory {
         }
         return true;
     }
-
-    // ===== REFRESH JTable: ListaTable =====
+  
     public void refreshTable(JTable ListaTable) {
-    String[] cols = { "ID", "Nombre", "Fecha Nac.", "Teléfono", "Salario", "Rol" };
-    DefaultTableModel model = new DefaultTableModel(cols, 0) {
-        @Override public boolean isCellEditable(int r, int c) { return false; }
-    };
-    for (Employee e : all) {
-        String rol =
-            (e instanceof Guide) ? "Guide" :
-            (e instanceof Zookeeper) ? "Zookeeper" : "";
-        model.addRow(new Object[] {
-            e.getId(),
-            e.getName(),
-            e.getBirthDate(),
-            e.getPhone(),   // ← aquí depende 100% de que Person tenga getPhone()
-            e.getSalary(),
-            rol
-        });
+        String[] cols = { "ID", "Nombre", "Fecha Nac.", "Teléfono", "Salario", "Rol" };
+        DefaultTableModel model = new DefaultTableModel(cols, 0) {
+            @Override public boolean isCellEditable(int r, int c) { return false; }
+        };
+        for (Employee e : all) {
+            String rol =
+                (e instanceof Guide) ? "Guide" :
+                (e instanceof Zookeeper) ? "Zookeeper" : "";
+            model.addRow(new Object[] {
+                e.getId(),
+                e.getName(),
+                e.getBirthDate(),
+                e.getPhone(),
+                e.getSalary(),
+                rol
+            });
+        }
+        ListaTable.setModel(model);
     }
-    ListaTable.setModel(model);     
-    }}   
+    
+}   

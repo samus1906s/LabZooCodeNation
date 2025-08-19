@@ -10,6 +10,7 @@ import Persons.Employees.Employee;
 import Exceptions.SalaryException;
 import Persons.Employees.EmployeeDirectory;
 import java.time.LocalDate;
+import javax.swing.JComboBox;
 /**
  *
  * @author Valdelomaar
@@ -221,8 +222,6 @@ java.awt.EventQueue.invokeLater(this::actualizarUIRol);
         lblSalario = new javax.swing.JLabel();
         lblTipo = new javax.swing.JLabel();
         lblErrorGeneral = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        ListaTable = new javax.swing.JTable();
         txtSpeciality = new javax.swing.JTextField();
         lblAviso = new javax.swing.JLabel();
         lblSpeciality = new javax.swing.JLabel();
@@ -238,6 +237,9 @@ java.awt.EventQueue.invokeLater(this::actualizarUIRol);
         jSeparator5 = new javax.swing.JSeparator();
         jSeparator6 = new javax.swing.JSeparator();
         jSeparator7 = new javax.swing.JSeparator();
+        btnBuscar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -323,20 +325,6 @@ java.awt.EventQueue.invokeLater(this::actualizarUIRol);
         lblErrorGeneral.setForeground(new java.awt.Color(255, 51, 51));
         lblErrorGeneral.setText("State");
 
-        ListaTable.setBackground(new java.awt.Color(204, 255, 204));
-        ListaTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {},
-                {},
-                {},
-                {}
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane2.setViewportView(ListaTable);
-
         txtSpeciality.setToolTipText("INGRESE SU ESPECIALIDAD (MAMIFERO, REPTILES, ETC)");
 
         lblAviso.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -348,6 +336,11 @@ java.awt.EventQueue.invokeLater(this::actualizarUIRol);
         lblAvisoIdioma.setText("Ingrese su Idioma");
 
         txtIdioma.setToolTipText("INGRESE EL IDIOMA");
+        txtIdioma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdiomaActionPerformed(evt);
+            }
+        });
 
         lblIdiomaState.setText("State");
 
@@ -374,6 +367,13 @@ java.awt.EventQueue.invokeLater(this::actualizarUIRol);
 
         jSeparator7.setForeground(new java.awt.Color(0, 0, 0));
 
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Buscar.png"))); // NOI18N
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -383,36 +383,64 @@ java.awt.EventQueue.invokeLater(this::actualizarUIRol);
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtSalario, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtFecha, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel8Layout.createSequentialGroup()
+                                    .addComponent(jLabel21)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(lblSalario)))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel23)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblTipo)))
+                        .addGap(79, 79, 79)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txtSalario, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtFecha, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel8Layout.createSequentialGroup()
-                                            .addComponent(jLabel21)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(lblSalario)))
-                                    .addGroup(jPanel8Layout.createSequentialGroup()
-                                        .addComponent(jLabel23)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(lblTipo)))
-                                .addGap(79, 79, 79)
+                                    .addComponent(txtIdioma)
+                                    .addComponent(txtSpeciality))
+                                .addGap(18, 18, 18)
                                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel8Layout.createSequentialGroup()
-                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtIdioma)
-                                            .addComponent(txtSpeciality))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblSpeciality, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(lblIdiomaState, javax.swing.GroupLayout.Alignment.TRAILING)))
-                                    .addGroup(jPanel8Layout.createSequentialGroup()
-                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblAvisoIdioma)
-                                            .addComponent(lblAviso))
-                                        .addGap(0, 0, Short.MAX_VALUE)))
-                                .addGap(18, 18, 18))
+                                    .addComponent(lblSpeciality, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lblIdiomaState, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblAvisoIdioma)
+                                    .addComponent(lblAviso))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(498, 498, 498))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator1))
+                        .addGap(464, 464, 464))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addComponent(jSeparator3)
+                        .addGap(470, 470, 470))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addComponent(jSeparator4)
+                        .addGap(476, 476, 476))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jSeparator6)
+                            .addComponent(jSeparator5))
+                        .addGap(470, 470, 470))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jSeparator7)
+                        .addGap(464, 464, 464))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)
+                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(btnBuscar)
+                                .addGap(165, 165, 165)
+                                .addComponent(lblErrorGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addComponent(jLabel19)
@@ -437,142 +465,130 @@ java.awt.EventQueue.invokeLater(this::actualizarUIRol);
                                 .addComponent(jLabel20)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblFecha))
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGap(84, 84, 84)
-                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(55, 55, 55)
-                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblErrorGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(22, 22, 22))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addComponent(jSeparator3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addComponent(jSeparator4)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator6)
-                            .addComponent(jSeparator5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jSeparator7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                            .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
+                .addComponent(jLabel22)
+                .addGap(3, 3, 3)
+                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(lblCedula))
+                .addGap(17, 17, 17)
+                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(lblNombre))
+                .addGap(18, 18, 18)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel19)
+                    .addComponent(lblNumero)
+                    .addComponent(lblNumState))
+                .addGap(18, 18, 18)
+                .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel20)
+                    .addComponent(lblFecha))
+                .addGap(14, 14, 14)
+                .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addContainerGap())
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel22)
                         .addGap(3, 3, 3)
-                        .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel17)
-                            .addComponent(lblCedula))
-                        .addGap(17, 17, 17)
-                        .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel18)
-                            .addComponent(lblNombre))
-                        .addGap(18, 18, 18)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblAvisoIdioma))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblSalario))))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(txtSalario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtIdioma, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblIdiomaState))
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(lblSpeciality))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel19)
-                            .addComponent(lblNumero)
-                            .addComponent(lblNumState))
-                        .addGap(18, 18, 18)
-                        .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblAviso)
+                            .addComponent(jLabel23)
+                            .addComponent(lblTipo))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel20)
-                            .addComponent(lblFecha))
-                        .addGap(14, 14, 14)
-                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
-                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(lblAvisoIdioma))
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblSalario))))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(txtSalario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtIdioma, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblIdiomaState))
-                        .addGap(18, 18, 18)
-                        .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addComponent(lblSpeciality))
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblAviso)
-                                    .addComponent(jLabel23)
-                                    .addComponent(lblTipo))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtSpeciality, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSpeciality, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEliminar)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addComponent(lblErrorGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(54, 54, 54))))
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(54, 54, 54))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblErrorGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(69, 69, 69))))
         );
 
         jScrollPane1.setViewportView(jPanel8);
+
+        btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Articulos.png"))); // NOI18N
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1055, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(288, 288, 288)
+                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(346, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(188, 188, 188))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1049, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 815, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 629, Short.MAX_VALUE)
+                .addComponent(btnLimpiar)
+                .addGap(55, 55, 55))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -583,151 +599,15 @@ java.awt.EventQueue.invokeLater(this::actualizarUIRol);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRoleActionPerformed
-        txtRole.addItemListener(e -> {
-            if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-                Role seleccion = (Role) e.getItem();
-                System.out.println("Seleccionaste: " + seleccion);
-            }
-        });
+        //
     }//GEN-LAST:event_txtRoleActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        lblErrorGeneral.setText("");
-
-        if (!validarFormulario()) {
-            lblErrorGeneral.setText("Todos los campos son obligatorios");
-            lblErrorGeneral.setForeground(java.awt.Color.RED);
-            return;
-        }
-
-        String id   = txtCedula.getText().trim();
-        String name = txtNombre.getText().trim();
-
-        java.time.LocalDate birthDate = validarYObtenerFechaNacimiento();
-        if (birthDate == null) return;
-
-        String phone = txtNumero.getText().replaceAll("\\D", "");
-if (phone.length() != 8) {
-    txtNumero.setText("");
-    lblNumState.setText("Debe de ser de 8 dígitos");
-    lblNumState.setForeground(java.awt.Color.RED);
-    return; // No guarda
-} else {
-    lblNumState.setText("✓");
-    lblNumState.setForeground(java.awt.Color.GREEN);
-}
-
-        Double salary;
-        try {
-            salary = Double.parseDouble(txtSalario.getText().trim());
-        } catch (NumberFormatException ex) {
-            lblSalario.setText("✗");
-            lblSalario.setForeground(java.awt.Color.RED);
-            lblErrorGeneral.setText("El salario debe ser numérico");
-            lblErrorGeneral.setForeground(java.awt.Color.RED);
-            return;
-        }
-
-        Persons.Employees.Role role = null;
-        Object sel = txtRole.getSelectedItem();
-        if (sel instanceof Persons.Employees.Role) {
-            role = (Persons.Employees.Role) sel;
-        } else if (sel != null) {
-            try { role = Persons.Employees.Role.valueOf(sel.toString()); } catch (IllegalArgumentException ignore) {}
-        }
-        if (role == null) {
-            lblTipo.setText("✗");
-            lblTipo.setForeground(java.awt.Color.RED);
-            lblErrorGeneral.setText("Debe seleccionar un rol");
-            lblErrorGeneral.setForeground(java.awt.Color.RED);
-            return;
-        }
-
-        try {
-            if (role == Persons.Employees.Role.ZOOKEEPER) {
-                String speciality = txtSpeciality.getText().trim();
-                if (speciality.isEmpty()) {
-                    lblSpeciality.setText("✗");
-                    lblSpeciality.setForeground(java.awt.Color.RED);
-                    lblAviso.setText("Debes ingresar una especialidad");
-                    lblAviso.setForeground(java.awt.Color.RED);
-                    return;
-                }
-                directory.add(role, id, name, birthDate, phone, salary, speciality);
-
-            } else if (role == Persons.Employees.Role.GUIDE) {
-                String idioma = txtIdioma.getText().trim();
-                if (idioma.isEmpty()) {
-                    lblIdiomaState.setText("✗");
-                    lblIdiomaState.setForeground(java.awt.Color.RED);
-                    lblAvisoIdioma.setText("Debes ingresar un idioma");
-                    lblAvisoIdioma.setForeground(java.awt.Color.RED);
-                    return;
-                }
-                directory.add(role, id, name, birthDate, phone, salary);
-
-            } else {
-                directory.add(role, id, name, birthDate, phone, salary);
-            }
-
-            directory.refreshTable(ListaTable);
-            lblErrorGeneral.setText("Empleado agregado con éxito");
-            lblErrorGeneral.setForeground(java.awt.Color.GREEN);
-            limpiarFormulario();
-
-        } catch (Exceptions.SalaryException se) {
-            lblSalario.setText("✗");
-            lblSalario.setForeground(java.awt.Color.RED);
-            lblErrorGeneral.setText(se.getMessage());
-            lblErrorGeneral.setForeground(java.awt.Color.RED);
-        } catch (IllegalArgumentException iae) {
-            lblErrorGeneral.setText(iae.getMessage());
-            lblErrorGeneral.setForeground(java.awt.Color.RED);
-        } catch (Exception ex) {
-            lblErrorGeneral.setText("Error: " + ex.getMessage());
-            lblErrorGeneral.setForeground(java.awt.Color.RED);
-        }
+        save();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        lblErrorGeneral.setText("");
-
-        // 1) Tomar ID desde la tabla o desde el campo
-        String id = null;
-        int sel = ListaTable.getSelectedRow();
-        if (sel >= 0) {
-            Object val = ListaTable.getValueAt(sel, 0); // Columna 0 = ID
-            if (val != null) id = val.toString().trim();
-        }
-        if (id == null || id.isEmpty()) {
-            String typed = txtCedula.getText().trim();
-            if (!typed.isEmpty()) id = typed;
-        }
-
-        // 2) Validar que tengamos un ID
-        if (id == null || id.isEmpty()) {
-            lblErrorGeneral.setText("Seleccione un empleado en la tabla o ingrese un ID.");
-            lblErrorGeneral.setForeground(java.awt.Color.RED);
-            return;
-        }
-
-        // 3) Eliminar en el directorio (borra de all y de su lista de rol)
-        boolean removed = directory.removeById(id);
-
-        if (removed) {
-            // 4) Refrescar tabla y feedback
-        directory.refreshTable(ListaTable);
-        lblErrorGeneral.setText("Empleado eliminado: " + id);
-        lblErrorGeneral.setForeground(java.awt.Color.GREEN);
-
-        // Si el formulario mostraba ese mismo ID, límpialo
-        if (id.equalsIgnoreCase(txtCedula.getText().trim())) {
-            limpiarFormulario();
-        }
-        } else {
-            lblErrorGeneral.setText("No existe un empleado con ese ID.");
-            lblErrorGeneral.setForeground(java.awt.Color.RED);
-        }
+       delete();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCedulaActionPerformed
@@ -743,19 +623,26 @@ if (phone.length() != 8) {
     }//GEN-LAST:event_txtSalarioActionPerformed
 
     private void txtNumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroActionPerformed
-        String phone = txtNumero.getText().replaceAll("\\D", "");
-        if (phone.length() != 8) {
-            txtNumero.setText("");
-            lblNumState.setText("Debe de ser de 8 dígitos");
-            lblNumState.setForeground(java.awt.Color.RED);
-            return; // No guarda
-        } else {
-            lblNumState.setText("✓");
-            lblNumState.setForeground(java.awt.Color.GREEN);
-        }
+        //
     }//GEN-LAST:event_txtNumeroActionPerformed
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        search();
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void txtIdiomaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdiomaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdiomaActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        limpiarFormulario();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    public JComboBox<Role> getTxtRole() {
+        return txtRole;
+    }
+
+    
     
     /**
      * @param args the command line arguments
@@ -792,7 +679,224 @@ if (phone.length() != 8) {
         });
     }
 
-    //METODOS
+    
+    
+    private void clear() {
+    limpiarFormulario();
+}
+
+    private void cargarEmpleadoEnFormulario(Employee e) {
+     if (e == null) return;
+
+    // --- Campos básicos ---
+    txtCedula.setText(e.getId() != null ? e.getId() : "");
+    txtNombre.setText(e.getName() != null ? e.getName() : "");
+    txtNumero.setText(e.getPhone() != null ? e.getPhone() : "");
+    txtSalario.setText(e.getSalary() != null ? String.valueOf(e.getSalary()) : "");
+    if (e.getBirthDate() != null) {
+        java.time.format.DateTimeFormatter fmt =
+            java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        txtFecha.setText(fmt.format(e.getBirthDate()));
+    } else {
+        txtFecha.setText("");
+    }
+
+    // --- Rol: seleccionar en el combo ---
+    Persons.Employees.Role role = null;
+    if (e instanceof Zookeeper) {
+        role = Persons.Employees.Role.ZOOKEEPER;
+    } else if (e instanceof Guide) {
+        role = Persons.Employees.Role.GUIDE;
+    }
+
+    if (role != null) {
+        boolean selected = false;
+        for (int i = 0; i < txtRole.getItemCount(); i++) {
+            Object it = txtRole.getItemAt(i);
+            if (it instanceof Persons.Employees.Role && it == role) {
+                txtRole.setSelectedIndex(i);
+                selected = true;
+                break;
+            } else if (it != null && it.toString().equals(role.name())) {
+                txtRole.setSelectedIndex(i);
+                selected = true;
+                break;
+            }
+        }
+        if (!selected) {
+            txtRole.setSelectedItem(role);
+        }
+    }
+
+    // --- Específicos por tipo (idioma / especialidad) ---
+    if (e instanceof Guide g) {
+        // Tomar el primer idioma no vacío
+        String idioma = "";
+        String[] langs = g.getLanguages();
+        if (langs != null) {
+            for (String s : langs) {
+                if (s != null && !s.isBlank()) { idioma = s.trim(); break; }
+            }
+        }
+        txtIdioma.setText(idioma);
+        lblIdiomaState.setText(idioma.isEmpty() ? "✗" : "✓");
+        lblIdiomaState.setForeground(idioma.isEmpty() ? java.awt.Color.RED : java.awt.Color.GREEN);
+
+        // Limpiar campos de zookeeper por si acaso
+        txtSpeciality.setText("");
+        lblSpeciality.setText("");
+        lblAviso.setText("");
+    } else if (e instanceof Zookeeper zk) {
+        String esp = zk.getSpeciality() != null ? zk.getSpeciality().trim() : "";
+        txtSpeciality.setText(esp);
+        lblSpeciality.setText(esp.isEmpty() ? "✗" : "✓");
+        lblSpeciality.setForeground(esp.isEmpty() ? java.awt.Color.RED : java.awt.Color.GREEN);
+
+        // Limpiar campos de guide por si acaso
+        txtIdioma.setText("");
+        lblIdiomaState.setText("");
+        lblAvisoIdioma.setText("");
+    } else {
+        // Otros roles / limpieza
+        txtSpeciality.setText("");
+        lblSpeciality.setText("");
+        txtIdioma.setText("");
+        lblIdiomaState.setText("");
+        lblAviso.setText("");
+        lblAvisoIdioma.setText("");
+    }
+
+    // --- Asegurar visibilidad correcta según rol (después de setear datos) ---
+    actualizarUIRol();
+
+    // --- Refrescar layout ---
+    java.awt.Container parent = txtRole.getParent();
+    if (parent != null) { parent.revalidate(); parent.repaint(); }
+}
+    
+    private void save() {
+    lblErrorGeneral.setText("");
+    if (!validarFormulario()) {
+        lblErrorGeneral.setText("Todos los campos son obligatorios");
+        lblErrorGeneral.setForeground(java.awt.Color.RED);
+        return;
+    }
+
+    String id   = txtCedula.getText().trim();
+    String name = txtNombre.getText().trim();
+    LocalDate birthDate = validarYObtenerFechaNacimiento();
+    if (birthDate == null) return;
+
+    String phone = validarYObtenerTelefono(); // 8 dígitos
+    if (phone == null) return;
+
+    Double salary;
+    try {
+        salary = Double.parseDouble(txtSalario.getText().trim());
+    } catch (NumberFormatException ex) {
+        lblSalario.setText("✗");
+        lblSalario.setForeground(java.awt.Color.RED);
+        lblErrorGeneral.setText("El salario debe ser numérico");
+        lblErrorGeneral.setForeground(java.awt.Color.RED);
+        return;
+    }
+
+    Persons.Employees.Role role = null;
+    Object sel = txtRole.getSelectedItem();
+    if (sel instanceof Persons.Employees.Role) {
+        role = (Persons.Employees.Role) sel;
+    } else if (sel != null) {
+        try { role = Persons.Employees.Role.valueOf(sel.toString()); } catch (IllegalArgumentException ignore) {}
+    }
+    if (role == null) {
+        lblTipo.setText("✗");
+        lblTipo.setForeground(java.awt.Color.RED);
+        lblErrorGeneral.setText("Debe seleccionar un rol");
+        lblErrorGeneral.setForeground(java.awt.Color.RED);
+        return;
+    }
+
+    try {
+        if (role == Persons.Employees.Role.ZOOKEEPER) {
+            String speciality = txtSpeciality.getText().trim();
+            if (speciality.isEmpty()) {
+                lblSpeciality.setText("✗");
+                lblSpeciality.setForeground(java.awt.Color.RED);
+                lblAviso.setText("Debes ingresar una especialidad");
+                lblAviso.setForeground(java.awt.Color.RED);
+                return;
+            }
+            directory.add(role, id, name, birthDate, phone, salary, speciality);
+
+        } else if (role == Persons.Employees.Role.GUIDE) {
+            String idioma = txtIdioma.getText().trim();
+            if (idioma.isEmpty()) {
+                lblIdiomaState.setText("✗");
+                lblIdiomaState.setForeground(java.awt.Color.RED);
+                lblAvisoIdioma.setText("Debes ingresar un idioma");
+                lblAvisoIdioma.setForeground(java.awt.Color.RED);
+                return;
+            }
+            // <-- Guardar el idioma junto con el GUIDE
+            directory.add(role, id, name, birthDate, phone, salary, idioma);
+
+        } else {
+            directory.add(role, id, name, birthDate, phone, salary);
+        }
+
+        lblErrorGeneral.setText("Empleado agregado con éxito");
+        lblErrorGeneral.setForeground(java.awt.Color.GREEN);
+        clear();
+
+    } catch (Exceptions.SalaryException se) {
+        lblSalario.setText("✗");
+        lblSalario.setForeground(java.awt.Color.RED);
+        lblErrorGeneral.setText(se.getMessage());
+        lblErrorGeneral.setForeground(java.awt.Color.RED);
+    } catch (IllegalArgumentException iae) {
+        lblErrorGeneral.setText(iae.getMessage());
+        lblErrorGeneral.setForeground(java.awt.Color.RED);
+    } catch (Exception ex) {
+        lblErrorGeneral.setText("Error: " + ex.getMessage());
+        lblErrorGeneral.setForeground(java.awt.Color.RED);
+    }
+}
+
+    private void delete() {
+    lblErrorGeneral.setText("");
+
+    // Ahora elimina SOLO por el ID escrito en el campo
+    String id = txtCedula.getText().trim();
+
+    if (id == null || id.isEmpty()) {
+        lblErrorGeneral.setText("Ingrese un ID en el campo de cédula para eliminar.");
+        lblErrorGeneral.setForeground(java.awt.Color.RED);
+        return;
+    }
+
+    boolean removed = directory.removeById(id);
+
+    if (removed) {
+        // Ya NO refrescamos ninguna tabla
+        lblErrorGeneral.setText("Empleado eliminado: " + id);
+        lblErrorGeneral.setForeground(java.awt.Color.GREEN);
+        clear();
+    } else {
+        lblErrorGeneral.setText("No existe un empleado con ese ID.");
+        lblErrorGeneral.setForeground(java.awt.Color.RED);
+    }
+}
+    
+    private void search(){
+          FrmSearchEmpleado dlg = new FrmSearchEmpleado(this, true);
+    dlg.setDirectory(directory);
+    dlg.setVisible(true);
+
+    Employee e = dlg.getEmployee();
+    if (e != null) {
+        cargarEmpleadoEnFormulario(e);
+    }
+    }
     
     private void actualizarUIRol() {
    Persons.Employees.Role rol = null;
@@ -842,7 +946,7 @@ if (phone.length() != 8) {
     
     }
     
-      private void limpiarFormulario() {
+    private void limpiarFormulario() {
     txtCedula.setText("");
     txtNombre.setText("");
     txtNumero.setText("");
@@ -1047,9 +1151,11 @@ if (phone.length() != 8) {
 }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable ListaTable;
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnSave;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -1059,7 +1165,6 @@ if (phone.length() != 8) {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;

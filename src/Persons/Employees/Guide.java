@@ -24,6 +24,12 @@ public class Guide extends Employee {
     public Tour[] getTours() {
         return tours;
     }
+
+    public void setLanguages(String[] languages) {
+        this.languages = languages;
+    }
+    
+    
     
     public Guide(String id, String name, LocalDate birthDate, String phone, Double salary) {
         super(id, name, birthDate, phone, salary);
